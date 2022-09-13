@@ -23,10 +23,6 @@ variable "subnet_id" {
   default = "subnet-056c0bdb8c94ac28e"
 }
 
-variable "instance_profile" {
-  type = string
-}
-
 variable vpc_id {
   type    = string
   default = "vpc-0e09ba17db364c0d2"
