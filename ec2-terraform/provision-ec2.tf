@@ -9,7 +9,10 @@ filter {
         name   = "virtualization-type"
         values = ["hvm"]
     }
-owners = ["099720109477"] # Canonical
+
+    locals {
+  vpc_name = "Development-VPC"
+}
 }
 # provision to eu-west-1 region
 provider "aws" {
