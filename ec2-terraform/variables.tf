@@ -23,11 +23,6 @@ variable "subnet_id" {
   default = "subnet-056c0bdb8c94ac28e"
 }
 
-variable "iam_instance_profile" {
-  type = string
-  default = "EC2InstanceProfile"
-}
-
 variable vpc_id {
   type    = string
   default = "vpc-0e09ba17db364c0d2"
