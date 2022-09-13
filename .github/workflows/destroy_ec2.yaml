@@ -1,4 +1,4 @@
-name: Provision t3.micro EC2
+name: Destroy t3.micro EC2
 
 on:
   workflow_dispatch:
