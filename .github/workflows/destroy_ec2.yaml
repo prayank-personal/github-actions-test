@@ -9,7 +9,7 @@ on:
         default: 'Destroy Github Actions EC2 Server'
         type: string
 jobs:
-  provision-ec2:
+  destroy-ec2:
     runs-on: Amazon AMI
     steps:
       - uses: actions/checkout@v3
