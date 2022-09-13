@@ -23,6 +23,30 @@ filter {
 owners = ["amazon"]
 }
 
+resource "aws_iam_instance_profile" "EC2InstanceProfile" {
+  name = "${var.prefix}-EC2InstanceProfile"
+  role = "${aws_iam_role.EC2Role.name}"
+}
+
+resource "aws_iam_role" "EC2Role" {
+  name = "${var.prefix}-EC2role"
+
+  assume_role_policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": "sts:AssumeRole",
+      "Principal": {
+        "Service": "ec2.amazonaws.com"
+      },
+      "Effect": "Allow",
+      "Sid": ""
+    }
+  ]
+}
+EOF
+}
 
 
 resource "aws_instance" "GithubActions" {
@@ -36,7 +60,7 @@ resource "aws_instance" "GithubActions" {
   subnet_id                   = "${var.subnet_id}"
   associate_public_ip_address = true  
   
-  iam_instance_profile = "${var.iam_instance_profile}"
+  iam_instance_profile = "${var.iam_instance_profile.EC2InstanceProfile.name}"
   key_name = "GithubActions"
   
   disable_api_termination = "false"
