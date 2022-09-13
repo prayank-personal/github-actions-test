@@ -9,11 +9,17 @@ filter {
         name   = "virtualization-type"
         values = ["hvm"]
     }
+}
 
-    locals {
+data "aws_region" "Region" {
+
+}
+
+locals {
   vpc_name = "Development-VPC"
 }
-}
+
+
 # provision to eu-west-1 region
 provider "aws" {
   region  = "eu-west-1"
@@ -22,7 +28,6 @@ resource "aws_instance" "GithubActionsEC2" {
   ami           = data.aws_ami.ubuntu.id
   instance_type = "t3.micro"
   key_name      = "GithubActions"
-  vpc_id        = "vpc-0e09ba17db364c0d2"
 tags = {
     Name = "GithubActionsEC2"
   }
