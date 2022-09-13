@@ -15,10 +15,11 @@ owners = ["099720109477"] # Canonical
 provider "aws" {
   region  = "eu-west-1"
 }
-resource "aws_instance" "app_server" {
+resource "aws_instance" "GithubActionsEC2" {
   ami           = data.aws_ami.ubuntu.id
   instance_type = "t3.micro"
   key_name      = "GithubActions"
+  vpc_id        = "vpc-0e09ba17db364c0d2"
 tags = {
     Name = "GithubActionsEC2"
   }
