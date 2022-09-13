@@ -8,6 +8,11 @@ variable "prefix" {
   default = "Development"
 }
 
+variable "ec2_instance_type" {
+  type = string
+  default = "t2.micro"
+}
+
 variable "security_group" {
   type = string
   default = "sg-08bcb1fac6e69efc8"
