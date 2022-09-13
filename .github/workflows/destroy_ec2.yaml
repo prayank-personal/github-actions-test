@@ -1,0 +1,35 @@
+name: Provision t3.micro EC2
+
+on:
+  workflow_dispatch:
+    inputs:
+      ec2-name:
+        description: Destroy EC2 Instance
+        required: true
+        default: 'Destroy Github Actions EC2 Server'
+        type: string
+jobs:
+  provision-ec2:
+    runs-on: Amazon AMI
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '14'
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: '${{ secrets.TF_USER_AWS_KEY }}'
+          aws-secret-access-key: '${{ secrets.TF_USER_AWS_SECRET }}'
+          aws-region: eu-west-1
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_wrapper: false
+      - name: Terraform Destroy
+        id:   destroy
+        env:
+          TF_VAR_ec2_name:  "${{ github.event.inputs.ec2-name }}"
+        run: |
+          cd ec2-terraform/
+          terraform destroy
