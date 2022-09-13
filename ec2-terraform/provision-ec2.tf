@@ -60,7 +60,7 @@ resource "aws_instance" "GithubActions" {
   subnet_id                   = "${var.subnet_id}"
   associate_public_ip_address = true  
   
-  iam_instance_profile = "${var.iam_instance_profile.EC2InstanceProfile.name}"
+  iam_instance_profile = "${var.iam_instance_profile}"
   key_name = "GithubActions"
   
   disable_api_termination = "false"
