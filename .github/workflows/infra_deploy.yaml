@@ -1,0 +1,68 @@
+name: Deploy Infrastructure
+
+on:
+  workflow_dispatch:
+    inputs:
+      components:
+        description: 'select which component to deploy'     
+        required: true
+        default: 'vpc' 
+        type: choice
+        options:
+        - vpc
+        - ec2
+      squad:
+        description: 'select which squad'     
+        required: true
+        default: 'shared' 
+        type: choice
+        options:
+        - shared
+        - cx
+        - ppm
+      environment:
+        description: 'select which environment'     
+        required: true
+        default: 'dev' 
+        type: choice
+        options:
+        - dev
+        - qa
+      state:
+        description: 'Plan or Apply'
+        required: true
+        default: 'plan'
+        type: choice
+        options:
+        - plan
+        - apply
+
+jobs:
+  tf_deploy:
+    if: ${{ github.event.inputs.components }} == 'vpc'
+    name: Deploy VPC
+    runs-on: ubuntu-latest
+    environment: ${{ github.event.inputs.environment }}
+    steps:
+         - name: Checkout Repo
+           uses: actions/checkout@v1
+         - name: Configure AWS Credentials
+           uses: aws-actions/configure-aws-credentials@v1
+           with:
+             aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+             aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+             aws-region: eu-west-1
+         - name: Terraform Plan
+           run: |
+             curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
+             sudo apt-add-repository "deb [arch=$(dpkg --print-architecture)] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
+             sudo apt install terraform
+             export environment="dev"
+             bash bin/terraform.sh \
+             --action            ${{ github.event.inputs.state }}  \
+             --bucket-prefix     "dev-bootstrap" \
+             --component         ${{ github.event.inputs.components }} \
+             --squad             ${{ github.event.inputs.squad }} \
+             --environment       ${{ github.event.inputs.environment }} \
+             --project           ${{ github.event.inputs.environment }} \
+             --region            "eu-west-1"
