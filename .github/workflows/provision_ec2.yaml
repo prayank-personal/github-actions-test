@@ -10,7 +10,7 @@ on:
         type: string
 jobs:
   provision-ec2:
-    runs-on: Amazon AMI
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
