@@ -1,4 +1,3 @@
-module "ec2"
-  {
+module "ec2server"{
     source="../../modules/ec2"
   }
